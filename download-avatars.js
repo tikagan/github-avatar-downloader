@@ -54,8 +54,10 @@ function downloadImageByURL (url, filePath) {
 //       return json
 //     }
 //   }
-
-getRepoContributors("jquery", "jquery", function(err, result) {
-  console.log("Errors:", err)
-  // console.log("Result:", result)
-});
+getRepoContributors(process.argv[2], process.argv[3], function(err, result){
+    console.log("Errors:", err)
+    // console.log("Result:", result)
+})
+// getRepoContributors("jquery", "jquery", function(err, result) {
+//   console.log("Errors:", err)
+//   // console.log("Result:", result)
