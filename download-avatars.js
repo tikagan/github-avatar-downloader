@@ -16,12 +16,33 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request.get(reqObj, function(err, response, body){
     if (err) {
       console.log("Error: ", err)
+      cb(err)
       return
     }
-    console.log(body)
-    return
+    if (response && response.statusCode === 200) {
+      let json = JSON.parse(body)
+      let avatar_urls = []
+      for (each in json) {
+        if (json[each]['avatar_url']) {
+          avatar_urls.push(json[each]['avatar_url'])
+        }
+      }
+      cb(null, avatar_urls)
+    }
   })
 }
+
+// function getJSON(err, response, body){
+//     if (err) {
+//       console.log("Error: ", err)
+//       return
+//     }
+//     if (response && response.statusCode === 200) {
+//       let json = JSON.parse(body)
+//       console.log("getJSON: ", typeof json)
+//       return json
+//     }
+//   }
 
 getRepoContributors("jquery", "jquery", function(err, result) {
   console.log("Errors:", err)
