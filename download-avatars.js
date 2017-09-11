@@ -8,6 +8,12 @@ const GITHUB_TOKEN = "4655bb968fd2bbee949d1985a1155e8c87b75bd6"
 
 
 function getRepoContributors(repoOwner, repoName, cb) {
+  if (!repoOwner || !repoName) {
+    console.log("Error: You need to specify a repository name and owner.")
+    console.log('Usage:')
+    console.log("\t node download-avatars.js <repository-owner> <repository-name>")
+    return
+  }
   let reqObj = {
     url: 'https://' + GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
     headers: {
@@ -27,8 +33,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
   })
 }
 
-
-
 function parseJSON(json) {
   json.forEach(function (avatarURL){
     let filePath = "./avatars/" + avatarURL.login + ".jpg"
@@ -37,27 +41,13 @@ function parseJSON(json) {
   })
 }
 
-
 function downloadImageByURL (url, filePath) {
   request.get(url)
        .pipe(fs.createWriteStream(filePath))
 }
 
-// function getJSON(err, response, body){
-//     if (err) {
-//       console.log("Error: ", err)
-//       return
-//     }
-//     if (response && response.statusCode === 200) {
-//       let json = JSON.parse(body)
-//       console.log("getJSON: ", typeof json)
-//       return json
-//     }
-//   }
+
 getRepoContributors(process.argv[2], process.argv[3], function(err, result){
     console.log("Errors:", err)
     // console.log("Result:", result)
 })
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   console.log("Errors:", err)
-//   // console.log("Result:", result)
